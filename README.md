@@ -100,8 +100,8 @@ hardware registers directly.
 M.Sc. AI and Automation — University West (Högskolan Väst), Sweden
 B.Sc. Physics + Master of Education — Linköping University
 
-[LinkedIn](www.linkedin.com/in/gabriel-danho-2a1a9112a)
-| [GitHub](https://github.com/gabrieldanho9988-sys)
+[LinkedIn](https://www.linkedin.com/in/gabriel-danho-2a1a9112a/)
+| [GitHub](Gabreil_Danho_Physics & AI)
 
 ---
 
