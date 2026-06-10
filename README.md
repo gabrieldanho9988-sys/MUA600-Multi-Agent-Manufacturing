@@ -7,6 +7,11 @@ extended with a Python/Ollama LLM sidecar for natural-language order intake.
 The system controls a simulated crane manufacturing cell where autonomous
 agents negotiate resources, handle process failures, and reconfigure
 dynamically — without any central controller.
+## Documentation
+
+- [Architecture](ARCHITECTURE.md) — system design, agent taxonomy, and the coordination/negotiation model.
+- [Design Notebook](docs/design-notes.md) — hand-drawn concept sketches that walk through the architecture.
+
 
 ---
 
