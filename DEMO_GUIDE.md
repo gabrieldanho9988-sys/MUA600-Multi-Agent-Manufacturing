@@ -9,30 +9,34 @@ This guide walks through a complete live demonstration of all five requirements 
 Make sure the following are installed and working before starting:
 
 - CMAS 2.14  
-- Python 3.x with dependencies: `pip install -r llm_sidecar/requirements.txt`  
-- Ollama with llama3: `ollama pull llama3`
+- Python 3.x with dependencies: pip install \-r llm\_sidecar/requirements.txt  
+- Ollama with llama3: ollama pull llama3
+
+**Note:** Running the live simulation requires CMAS 2.14 and the University West simulation environment, which are not included in this repository. The CMAS model, Python sidecar, and documentation are provided so the design and implementation can be studied in full.
 
 ---
 
 ## System Startup (required before every demo)
 
-Always start in this exact order:
+### 1\. Clone the repository
 
-### 1\. Start the simulation
+git clone https://github.com/gabrieldanho9988-sys/MUA600-Multi-Agent-Manufacturing.git
 
-Double-click `Simulation.exe` → wait for the register panel to appear.
+cd MUA600-Multi-Agent-Manufacturing
 
-### 2\. Start CMAS
+All commands below are run from inside this folder.
 
-Open `cmas.exe` → open `cmas_project/mua600.cmas` → click **Run**
+### 2\. Start the simulation
+
+Double-click Simulation.exe \-\> wait for the register panel to appear.
+
+### 3\. Start CMAS
+
+Open cmas.exe \-\> open cmas\_project/mua600.cmas \-\> click **Run**
 
 Wait until the status bar shows:
 
 Running 07: Failed 00: Finished 00
-
-### 3\. Open PowerShell
-
-cd C:\\Users\\gabri\\Documents\\MUA600\_Project
 
 ### 4\. Warm up the LLM
 
@@ -86,10 +90,10 @@ ask a transporter to move to sink
 
 ### What to observe
 
-- `[1]setX` in the register panel updates as the crane moves  
-- `[2]setY` \= 150 during transit, drops to 82 during pickup/placement  
-- `[19]p1running` \= 1 while Process1 is active  
-- Status bar → **Finished 01**
+- \[1\]setX in the register panel updates as the crane moves  
+- \[2\]setY \= 150 during transit, drops to 82 during pickup/placement  
+- \[19\]p1running \= 1 while Process1 is active  
+- Status bar \-\> **Finished 01**
 
 ### Key point
 
@@ -107,8 +111,8 @@ python llm\_sidecar\\llm\_main.py "make 2 type-1 parts and 2 type-2 parts"
 
 Then alternate Generate presses:
 
-- Press **Generate on Source1** → type-1 part released  
-- Press **Generate on Source2** → type-2 part released  
+- Press **Generate on Source1** \-\> type-1 part released  
+- Press **Generate on Source2** \-\> type-2 part released  
 - Repeat as each source clears
 
 ### Expected PowerShell output
@@ -148,13 +152,13 @@ Start to run Process2
 ### What to observe
 
 - Two blue part squares visible in the simulation moving independently  
-- `[19]p1running` and `[20]p2running` both active  
+- \[19\]p1running and \[20\]p2running both active  
 - Crane serves both routes without collision  
-- Status bar → **Finished 04**
+- Status bar \-\> **Finished 04**
 
 ### Key point
 
-The only difference between RunProcess1 and RunProcess2 is one line: `ProcessInterface.process := 2`. The Crane code is identical to R1. Adding a new product type requires only a new Part template — nothing else changes.
+The only difference between RunProcess1 and RunProcess2 is one line: ProcessInterface.process := 2. The Crane code is identical to R1. Adding a new product type requires only a new Part template — nothing else changes.
 
 ---
 
@@ -166,40 +170,40 @@ The only difference between RunProcess1 and RunProcess2 is one line: `ProcessInt
 
 Confirm in CMAS Modelling Tree:
 
-Process1 → Interfaces → ProcessInterface → Variables → x → 450
+Process1 \-\> Interfaces \-\> ProcessInterface \-\> Variables \-\> x \-\> 450
 
 python llm\_sidecar\\llm\_main.py "make 1 type-1 part"
 
-Press **Generate on Source1** → watch `[1]setX` → crane goes to **450**.
+Press **Generate on Source1** \-\> watch \[1\]setX \-\> crane goes to **450**.
 
 ### Round 2 — Reconfigured (x \= 600\)
 
 1. Click **Stop** in CMAS  
-2. In Modelling Tree: `Process1 → Interfaces → ProcessInterface → Variables → x`  
-3. Change value from **450 → 600** → press Enter  
-4. Click **Update** → click **Run** → wait 10 seconds
+2. In Modelling Tree: Process1 \-\> Interfaces \-\> ProcessInterface \-\> Variables \-\> x  
+3. Change value from **450 \-\> 600** \-\> press Enter  
+4. Click **Update** \-\> click **Run** \-\> wait 10 seconds
 
 python llm\_sidecar\\llm\_main.py "make 1 type-1 part"
 
-Press **Generate on Source1** → watch `[1]setX` → crane goes to **600**.
+Press **Generate on Source1** \-\> watch \[1\]setX \-\> crane goes to **600**.
 
 The part will not complete at x=600 (no physical station there) — this is expected and is the proof.
 
 ### What to observe
 
-- Round 1: `setX` reaches 450 during Process1 approach  
-- Round 2: `setX` reaches 600 — a completely different coordinate  
+- Round 1: setX reaches 450 during Process1 approach  
+- Round 2: setX reaches 600 — a completely different coordinate  
 - Zero changes to crane code, process plan, or any other agent
 
 ### Key point
 
-Process position is stored as a runtime variable on the process agent's own interface. The crane asks "where are you?" at runtime via `getXY()` and follows the answer. Reconfiguration is a data change, not a code change.
+Process position is stored as a runtime variable on the process agent's own interface. The crane asks "where are you?" at runtime via getXY() and follows the answer. Reconfiguration is a data change, not a code change.
 
 ### Restore after demo
 
 1. Stop CMAS  
 2. Set x back to **450** in Modelling Tree  
-3. Restart Simulation.exe → CMAS → Run
+3. Restart Simulation.exe \-\> CMAS \-\> Run
 
 ---
 
@@ -209,7 +213,7 @@ Process position is stored as a runtime variable on the process agent's own inte
 
 ### How failure is triggered
 
-Process1's `run` skill is configured with `agent.failed := true` in state 10\. This simulates a sensor or hardware failure signal. In a real system this flag would be set by the process agent itself when a physical sensor detects an error.
+Process1's run skill is configured with agent.failed := true in state 10\. This simulates a sensor or hardware failure signal. In a real system this flag would be set by the process agent itself when a physical sensor detects an error.
 
 ### Run
 
@@ -229,20 +233,20 @@ ask a transporter to move to sink
 
 ### What to observe
 
-- Part books Process1 → Process1 immediately fails  
-- Part saves Process1 coordinates → unbooks → calls `agreeandbook()` again  
-- CMAS finds Process2 as alternative → Part re-routes there  
+- Part books Process1 \-\> Process1 immediately fails  
+- Part saves Process1 coordinates \-\> unbooks \-\> calls agreeandbook() again  
+- CMAS finds Process2 as alternative \-\> Part re-routes there  
 - Crane moves part from Process1 location to Process2  
-- Part completes at Process2 → delivered to Sink  
-- Status bar → **Finished 01**
+- Part completes at Process2 \-\> delivered to Sink  
+- Status bar \-\> **Finished 01**
 
 ### Key point
 
-The recovery uses the same `agreeandbook()` mechanism as R1. The Part does not have a hardcoded fallback — it re-runs the negotiation protocol. If Process2 were also busy, CMAS would wait. If a third process existed, CMAS could book that instead.
+The recovery uses the same agreeandbook() mechanism as R1. The Part does not have a hardcoded fallback — it re-runs the negotiation protocol. If Process2 were also busy, CMAS would wait. If a third process existed, CMAS could book that instead.
 
 ### Restore after demo
 
-Remove `agent.failed := true` from Process1's run skill → click **Update** → system returns to normal.
+Remove agent.failed := true from Process1's run skill \-\> click **Update** \-\> system returns to normal.
 
 ---
 
@@ -280,7 +284,7 @@ Press **Generate on Source1** x 3 and **Generate on Source2** x 2\.
 
   Part2 (type-2) pending : 2  (Modbus reg 26\)
 
-Status bar → **Finished 05**
+Status bar \-\> **Finished 05**
 
 ### Demo 2 — Flexible natural language
 
@@ -292,15 +296,15 @@ Same result — different phrasing, same validated JSON output.
 
 The Python validator checks several conditions before anything reaches Modbus:
 
-"orders" in data                              \# correct key exists
+"orders" in data                    \# correct key exists
 
-isinstance(val\["part\_type"\], int)             \# correct type
+isinstance(val\["part\_type"\], int)   \# correct type
 
-val\["part\_type"\] in {1, 2}                    \# sensible value
+val\["part\_type"\] in {1, 2}          \# sensible value
 
-val\["quantity"\] \> 0                           \# positive quantity
+val\["quantity"\] \> 0                 \# positive quantity
 
-If any check fails → LLM is retried up to 3 times → order rejected. Nothing unsafe ever reaches Modbus or the agents.
+If any check fails \-\> LLM is retried up to 3 times \-\> order rejected. Nothing unsafe ever reaches Modbus or the agents.
 
 ### Key point
 
