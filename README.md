@@ -11,7 +11,7 @@ dynamically — without any central controller.
 
 - [Architecture](ARCHITECTURE.md) — system design, agent taxonomy, and the coordination/negotiation model.
 - [Design Notebook](docs/design-notes.md) — hand-drawn concept sketches that walk through the architecture.
-
+> **Want to run it yourself?** See the [Demo Guide](DEMO_GUIDE.md) for step-by-step instructions to reproduce all five requirements (R1–R5).
 
 ---
 
