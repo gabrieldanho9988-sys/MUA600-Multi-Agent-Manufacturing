@@ -16,7 +16,14 @@ dynamically — without any central controller.
 ---
 
 ## System Architecture
+
+```
+Natural Language → llama3 (Ollama) → JSON Validator → Modbus TCP
+→ OrderIntake Agent (CMAS) → Part Agents → Crane + Process Agents → Sink
+```
+
 ---
+
 
 ## Requirements Implemented
 
@@ -41,6 +48,17 @@ dynamically — without any central controller.
 ---
 
 ## Project Structure
+
+```
+MUA600-Multi-Agent-Manufacturing/
+├── cmas_project/        # CMAS multi-agent model (mua600.cmas)
+├── llm_sidecar/         # Python LLM order intake + Modbus bridge
+├── docs/                # Project plan, report, design notes, sketches
+├── ARCHITECTURE.md      # System design and coordination model
+├── DEMO_GUIDE.md        # Step-by-step R1–R5 reproduction guide
+└── README.md
+```
+
 ---
 
 ## How to Run
@@ -106,7 +124,7 @@ M.Sc. AI and Automation — University West (Högskolan Väst), Sweden
 B.Sc. Physics + Master of Education — Linköping University
 
 [LinkedIn](https://www.linkedin.com/in/gabriel-danho-2a1a9112a/)
-| [GitHub](Gabreil_Danho_Physics & AI)
+| [GitHub](https://github.com/gabrieldanho9988-sys)
 
 ---
 
